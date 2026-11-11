@@ -1,0 +1,14 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: fw2-mysql
+    environment:
+      MYSQL_DATABASE: todoapp
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3307:3306"
+    volumes:
+      - fw-db-data:/var/lib/mysql
+
+volumes:
+  fw-db-data:
