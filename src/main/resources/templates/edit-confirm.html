@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>やること編集確認</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<main class="container">
+    <h1 class="page-title">編集内容の確認</h1>
+
+    <p class="confirm-value">やること：<span th:text="${#strings.isEmpty(todo.title) ? '（入力なし）' : todo.title}">（入力なし）</span></p>
+    <p class="confirm-value">メモ：<span th:text="${#strings.isEmpty(todo.detail) ? '（入力なし）' : todo.detail}">（入力なし）</span></p>
+    <p class="confirm-value">ジャンル：<span th:text="${#strings.isEmpty(todo.category) ? '（入力なし）' : todo.category}">（入力なし）</span></p>
+    <p class="confirm-value">優先度：<span th:text="${todo.priority == null ? '（入力なし）' : (todo.priority == 1 ? '高' : (todo.priority == 2 ? '中' : '低'))}">（入力なし）</span></p>
+    <p class="confirm-value">期限：<span th:text="${todo.dueDate == null ? '（入力なし）' : todo.dueDate}">（入力なし）</span></p>
+    <p class="confirm-value">完了：<span th:text="${todo.completed == null ? '（入力なし）' : (todo.completed ? '完了' : '未完了')}">（入力なし）</span></p>
+
+    <div class="confirm-actions">
+        <form th:action="@{/todos/{id}(id=${todo.id})}" th:object="${todo}" method="post">
+            <input type="hidden" name="title" th:value="${todo.title}">
+            <input type="hidden" name="detail" th:value="${todo.detail}">
+            <input type="hidden" name="category" th:value="${todo.category}">
+            <input type="hidden" name="priority" th:value="${todo.priority}">
+            <input type="hidden" name="dueDate" th:value="${todo.dueDate}">
+            <input type="hidden" name="completed" th:value="${todo.completed}">
+            <button class="btn" type="submit">保存する</button>
+        </form>
+
+        <form th:action="@{/todos/{id}/edit(id=${todo.id})}" th:object="${todo}" method="post">
+            <input type="hidden" name="title" th:value="${todo.title}">
+            <input type="hidden" name="detail" th:value="${todo.detail}">
+            <input type="hidden" name="category" th:value="${todo.category}">
+            <input type="hidden" name="priority" th:value="${todo.priority}">
+            <input type="hidden" name="dueDate" th:value="${todo.dueDate}">
+            <input type="hidden" name="completed" th:value="${todo.completed}">
+            <button class="btn sub" type="submit">書き直す</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>
