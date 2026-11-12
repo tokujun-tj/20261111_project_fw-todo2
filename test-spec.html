@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>テスト仕様書</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; color: #1f2937; background: #ffffff; font-family: sans-serif; font-size: 12px; line-height: 1.35; }
+        .page { width: 100%; padding: 12px; }
+        .toolbar { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+        .print-button { border: 1px solid #334155; border-radius: 5px; padding: 6px 12px; background: #334155; color: #ffffff; cursor: pointer; font-size: 12px; }
+        table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+        col.no { width: 5%; }
+        col.check { width: 20%; }
+        col.input { width: 15%; }
+        col.expected { width: 25%; }
+        col.result { width: 10%; }
+        col.note { width: 25%; }
+        th, td { border: 1px solid #94a3b8; padding: 4px 6px; vertical-align: top; overflow-wrap: anywhere; }
+        th { background: #e2e8f0; text-align: center; font-weight: bold; }
+        .result-options { display: flex; gap: 8px; align-items: center; white-space: nowrap; }
+        .result-options label { display: inline-flex; align-items: center; gap: 2px; }
+        textarea { display: block; width: 100%; min-height: 42px; resize: vertical; border: 1px solid #94a3b8; padding: 3px; font: inherit; line-height: 1.35; }
+        @media print {
+            .page { padding: 0; }
+            .toolbar { display: none; }
+            body { font-size: 10px; }
+            th, td { padding: 3px 4px; }
+            textarea { height: auto; min-height: 0; resize: none; overflow: visible; border: 0; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="toolbar"><button class="print-button" type="button" onclick="printTestSpec()">PDFで保存</button></div>
+    <table>
+        <colgroup>
+            <col class="no"><col class="check"><col class="input"><col class="expected"><col class="result"><col class="note">
+        </colgroup>
+        <thead>
+            <tr><th>番号</th><th>確かめること</th><th>入れる値</th><th>期待する結果</th><th>結果</th><th>備考/NG</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>1</td><td>一覧画面で、登録したやることが1画面に並んで出ること</td><td>http://localhost:8080/todos を開く</td><td>登録済みの5件が、やること・ジャンル・優先度・期限・状態・操作の列で表示される。</td><td><div class="result-options"><label><input type="radio" name="result-1" value="OK">OK</label><label><input type="radio" name="result-1" value="NG">NG</label></div></td><td><textarea name="note-1"></textarea></td></tr>
+            <tr><td>2</td><td>一覧画面の「新規登録」から新しいやることを1件入れられること</td><td>「新規登録」を押す</td><td>登録画面が開き、やること・メモ・ジャンル・優先度・期限の入力欄と「確認する」「一覧へ」が表示される。</td><td><div class="result-options"><label><input type="radio" name="result-2" value="OK">OK</label><label><input type="radio" name="result-2" value="NG">NG</label></div></td><td><textarea name="note-2"></textarea></td></tr>
+            <tr><td>3</td><td>入力した新しいやることを確認して登録できること</td><td>やること「テスト用の行」、メモ「確認用」、ジャンル「プログラミング」、優先度「中」、期限「2026-12-01」を入力して「確認する」→「登録する」</td><td>確認画面で入力した5つの値が文字として表示され、登録後に一覧の上に「登録しました」と出て6件目が表示される。</td><td><div class="result-options"><label><input type="radio" name="result-3" value="OK">OK</label><label><input type="radio" name="result-3" value="NG">NG</label></div></td><td><textarea name="note-3"></textarea></td></tr>
+            <tr><td>4</td><td>登録したやることを編集して直せること</td><td>「テスト用の行」の「編集」→メモを「編集後」に変更→「確認する」→「保存する」</td><td>編集画面に現在の6つの値が入り、保存後に一覧の上に「保存しました」と出てメモが「編集後」になる。</td><td><div class="result-options"><label><input type="radio" name="result-4" value="OK">OK</label><label><input type="radio" name="result-4" value="NG">NG</label></div></td><td><textarea name="note-4"></textarea></td></tr>
+            <tr><td>5</td><td>登録したやることを削除できること</td><td>「テスト用の行」の「削除」→「消す」</td><td>削除確認画面にやること・ジャンル・期限が表示され、削除後に一覧の上に「削除しました」と出て対象行が消える。</td><td><div class="result-options"><label><input type="radio" name="result-5" value="OK">OK</label><label><input type="radio" name="result-5" value="NG">NG</label></div></td><td><textarea name="note-5"></textarea></td></tr>
+            <tr><td>6</td><td>やることの名前で一覧を絞り込めること</td><td>名前欄に既存のやることの一部を入力して「絞り込む」</td><td>入力した言葉がやることの名前に一部でも含まれる行だけが一覧に残る。</td><td><div class="result-options"><label><input type="radio" name="result-6" value="OK">OK</label><label><input type="radio" name="result-6" value="NG">NG</label></div></td><td><textarea name="note-6"></textarea></td></tr>
+            <tr><td>7</td><td>期限の順に一覧を並び替えられること</td><td>「期限が近い順」または「期限が遠い順」を押す</td><td>一覧の行が期限の順に並び替わる。</td><td><div class="result-options"><label><input type="radio" name="result-7" value="OK">OK</label><label><input type="radio" name="result-7" value="NG">NG</label></div></td><td><textarea name="note-7"></textarea></td></tr>
+
+            <tr><td>8</td><td>一覧画面の中身を確認する</td><td>http://localhost:8080/todos を開く</td><td>名前の絞り込み欄、ジャンルの選択欄、「絞り込む」、期限が近い順・遠い順、新規登録、各行の編集・削除が表示される。</td><td><div class="result-options"><label><input type="radio" name="result-8" value="OK">OK</label><label><input type="radio" name="result-8" value="NG">NG</label></div></td><td><textarea name="note-8"></textarea></td></tr>
+            <tr><td>9</td><td>登録画面の中身を確認する</td><td>一覧から「新規登録」を押す</td><td>やること・メモ・ジャンル・優先度・期限の入力欄と「確認する」「一覧へ」が表示される。</td><td><div class="result-options"><label><input type="radio" name="result-9" value="OK">OK</label><label><input type="radio" name="result-9" value="NG">NG</label></div></td><td><textarea name="note-9"></textarea></td></tr>
+            <tr><td>10</td><td>登録の確認画面の中身を確認する</td><td>登録画面に値を入れて「確認する」を押す</td><td>入力した5つの値が入力欄ではなく文字として並び、「登録する」「書き直す」が表示される。</td><td><div class="result-options"><label><input type="radio" name="result-10" value="OK">OK</label><label><input type="radio" name="result-10" value="NG">NG</label></div></td><td><textarea name="note-10"></textarea></td></tr>
+            <tr><td>11</td><td>編集画面の中身を確認する</td><td>一覧の行の「編集」を押す</td><td>やること・メモ・ジャンル・優先度・期限・完了の入力欄が現在の値入りで表示され、「確認する」「一覧へ」が表示される。</td><td><div class="result-options"><label><input type="radio" name="result-11" value="OK">OK</label><label><input type="radio" name="result-11" value="NG">NG</label></div></td><td><textarea name="note-11"></textarea></td></tr>
+            <tr><td>12</td><td>編集の確認画面の中身を確認する</td><td>編集画面で値を変更して「確認する」を押す</td><td>変更後の値が入力欄ではなく文字として並び、「保存する」「書き直す」が表示される。</td><td><div class="result-options"><label><input type="radio" name="result-12" value="OK">OK</label><label><input type="radio" name="result-12" value="NG">NG</label></div></td><td><textarea name="note-12"></textarea></td></tr>
+            <tr><td>13</td><td>削除確認画面の中身を確認する</td><td>一覧の行の「削除」を押す</td><td>削除する1件のやること・ジャンル・期限が表示され、「消す」「やめる」が表示される。</td><td><div class="result-options"><label><input type="radio" name="result-13" value="OK">OK</label><label><input type="radio" name="result-13" value="NG">NG</label></div></td><td><textarea name="note-13"></textarea></td></tr>
+
+            <tr><td>14</td><td>やることを空のまま送ったときに登録を止めること</td><td>やることを空欄、他の必須欄を入力して送る</td><td>登録画面に留まり、やること欄の下に「やることを入力してください」と出る。</td><td><div class="result-options"><label><input type="radio" name="result-14" value="OK">OK</label><label><input type="radio" name="result-14" value="NG">NG</label></div></td><td><textarea name="note-14"></textarea></td></tr>
+            <tr><td>15</td><td>やることを255文字を超えて入力したときに登録を止めること</td><td>やることに256文字を入力して送る</td><td>登録画面に留まり、やること欄の下に「やることは255文字以内で入力してください」と出る。</td><td><div class="result-options"><label><input type="radio" name="result-15" value="OK">OK</label><label><input type="radio" name="result-15" value="NG">NG</label></div></td><td><textarea name="note-15"></textarea></td></tr>
+            <tr><td>16</td><td>メモを255文字を超えて入力したときに登録を止めること</td><td>メモに256文字を入力して送る</td><td>登録画面に留まり、メモ欄の下に「メモは255文字以内で入力してください」と出る。</td><td><div class="result-options"><label><input type="radio" name="result-16" value="OK">OK</label><label><input type="radio" name="result-16" value="NG">NG</label></div></td><td><textarea name="note-16"></textarea></td></tr>
+            <tr><td>17</td><td>ジャンルを選ばずに送ったときに登録を止めること</td><td>ジャンルを未選択、他の必須欄を入力して送る</td><td>登録画面に留まり、ジャンル欄の下に「ジャンルを選んでください」と出る。</td><td><div class="result-options"><label><input type="radio" name="result-17" value="OK">OK</label><label><input type="radio" name="result-17" value="NG">NG</label></div></td><td><textarea name="note-17"></textarea></td></tr>
+            <tr><td>18</td><td>優先度を選ばずに送ったときに登録を止めること</td><td>優先度を未選択、他の必須欄を入力して送る</td><td>登録画面に留まり、優先度欄の下に「優先度を選んでください」と出る。</td><td><div class="result-options"><label><input type="radio" name="result-18" value="OK">OK</label><label><input type="radio" name="result-18" value="NG">NG</label></div></td><td><textarea name="note-18"></textarea></td></tr>
+            <tr><td>19</td><td>必須欄に半角または全角の空白だけを入れたときに送信を止めること</td><td>やることに半角空白だけ、または全角空白だけを入力して送る</td><td>登録画面に留まり、やること欄の下に「やることを入力してください」と出る。</td><td><div class="result-options"><label><input type="radio" name="result-19" value="OK">OK</label><label><input type="radio" name="result-19" value="NG">NG</label></div></td><td><textarea name="note-19"></textarea></td></tr>
+
+            <tr><td>20</td><td>登録後に操作結果の文が一覧の上に出ること</td><td>有効な値で登録する</td><td>一覧のいちばん上に「登録しました」と1行出る。</td><td><div class="result-options"><label><input type="radio" name="result-20" value="OK">OK</label><label><input type="radio" name="result-20" value="NG">NG</label></div></td><td><textarea name="note-20"></textarea></td></tr>
+            <tr><td>21</td><td>編集保存後に操作結果の文が一覧の上に出ること</td><td>有効な値で編集を保存する</td><td>一覧のいちばん上に「保存しました」と1行出る。</td><td><div class="result-options"><label><input type="radio" name="result-21" value="OK">OK</label><label><input type="radio" name="result-21" value="NG">NG</label></div></td><td><textarea name="note-21"></textarea></td></tr>
+            <tr><td>22</td><td>削除後に操作結果の文が一覧の上に出ること</td><td>対象の削除を確定する</td><td>一覧のいちばん上に「削除しました」と1行出る。</td><td><div class="result-options"><label><input type="radio" name="result-22" value="OK">OK</label><label><input type="radio" name="result-22" value="NG">NG</label></div></td><td><textarea name="note-22"></textarea></td></tr>
+            <tr><td>23</td><td>存在しない番号を開いたときに操作結果の文が一覧の上に出ること</td><td>編集または削除確認のアドレスの番号を存在しない番号に変えて開く</td><td>一覧に戻り、いちばん上に「見つかりませんでした」と出る。</td><td><div class="result-options"><label><input type="radio" name="result-23" value="OK">OK</label><label><input type="radio" name="result-23" value="NG">NG</label></div></td><td><textarea name="note-23"></textarea></td></tr>
+
+            <tr><td>24</td><td>名前の絞り込みが一部一致で残ること</td><td>名前欄に既存のやることの一部を入れ、「絞り込む」</td><td>入力した言葉を名前に一部でも含む行だけが一覧に残る。</td><td><div class="result-options"><label><input type="radio" name="result-24" value="OK">OK</label><label><input type="radio" name="result-24" value="NG">NG</label></div></td><td><textarea name="note-24"></textarea></td></tr>
+            <tr><td>25</td><td>ジャンルの絞り込みが完全一致で残ること</td><td>ジャンルで「プログラミング」を選び、「絞り込む」</td><td>ジャンルが「プログラミング」と完全に同じ行だけが一覧に残る。</td><td><div class="result-options"><label><input type="radio" name="result-25" value="OK">OK</label><label><input type="radio" name="result-25" value="NG">NG</label></div></td><td><textarea name="note-25"></textarea></td></tr>
+            <tr><td>26</td><td>最初に開いたときに期限が近い順で並ぶこと</td><td>絞り込み条件を空にして /todos を開く</td><td>一覧の行が期限の近い順に表示される。</td><td><div class="result-options"><label><input type="radio" name="result-26" value="OK">OK</label><label><input type="radio" name="result-26" value="NG">NG</label></div></td><td><textarea name="note-26"></textarea></td></tr>
+            <tr><td>27</td><td>期限が遠い順で並ぶこと</td><td>「期限が遠い順」を押す</td><td>一覧の行が期限の遠い順に表示される。</td><td><div class="result-options"><label><input type="radio" name="result-27" value="OK">OK</label><label><input type="radio" name="result-27" value="NG">NG</label></div></td><td><textarea name="note-27"></textarea></td></tr>
+            <tr><td>28</td><td>名前とジャンルの絞り込み条件が空のときに全件出ること</td><td>名前を空欄、ジャンルを「すべて」にして「絞り込む」</td><td>絞り込まずに登録されているすべての行が一覧に表示される。</td><td><div class="result-options"><label><input type="radio" name="result-28" value="OK">OK</label><label><input type="radio" name="result-28" value="NG">NG</label></div></td><td><textarea name="note-28"></textarea></td></tr>
+            <tr><td>29</td><td>絞り込み結果が0件のときに一覧と同じ文が出ること</td><td>名前欄に存在しない言葉を入れて「絞り込む」</td><td>一覧に「まだ1件も登録されていません」と出る。</td><td><div class="result-options"><label><input type="radio" name="result-29" value="OK">OK</label><label><input type="radio" name="result-29" value="NG">NG</label></div></td><td><textarea name="note-29"></textarea></td></tr>
+            <tr><td>30</td><td>絞り込みの言葉と並びの向きがアドレスの後ろに付くこと</td><td>名前・ジャンルを指定して「絞り込む」、並び替えを押す</td><td>ブラウザのアドレスの後ろに keyword・category・order の値が付いて表示される。</td><td><div class="result-options"><label><input type="radio" name="result-30" value="OK">OK</label><label><input type="radio" name="result-30" value="NG">NG</label></div></td><td><textarea name="note-30"></textarea></td></tr>
+
+            <tr><td>31</td><td>テストで増やした行を削除し、todosを5行へ戻すこと</td><td>テストで登録した行を削除確認から「消す」</td><td>削除後の一覧にテストで増やした行がなく、todosの行数が5行になる。</td><td><div class="result-options"><label><input type="radio" name="result-31" value="OK">OK</label><label><input type="radio" name="result-31" value="NG">NG</label></div></td><td><textarea name="note-31"></textarea></td></tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    function expandTextareas() {
+        document.querySelectorAll('textarea').forEach(function (textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        });
+    }
+
+    function printTestSpec() {
+        expandTextareas();
+        window.print();
+    }
+
+    window.addEventListener('beforeprint', expandTextareas);
+</script>
+</body>
+</html>
