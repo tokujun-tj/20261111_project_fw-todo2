@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Todo list</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<main class="container">
+    <h1 class="page-title">Todo list</h1>
+    <p class="flash" th:if="${message != null}" th:text="${message}">Saved</p>
+    <form class="search-bar" method="get" action="/todos">
+        <label class="form-label" for="keyword">Keyword</label>
+        <input class="form-input" id="keyword" name="keyword" type="text" th:value="${keyword}">
+        <label class="form-label" for="category">Category</label>
+        <select class="form-input" id="category" name="category">
+            <option value="すべて" th:selected="${category == 'すべて'}">All</option>
+            <option value="デザイン" th:selected="${category == 'デザイン'}">Design</option>
+            <option value="マーケティング" th:selected="${category == 'マーケティング'}">Marketing</option>
+            <option value="プログラミング" th:selected="${category == 'プログラミング'}">Programming</option>
+            <option value="資格" th:selected="${category == '資格'}">Qualification</option>
+            <option value="就職活動" th:selected="${category == '就職活動'}">Job hunting</option>
+        </select>
+        <input type="hidden" name="order" th:value="${order}">
+        <button class="btn" type="submit">Filter</button>
+    </form>
+    <p>
+        <a class="link" th:href="@{/todos(keyword=${keyword}, category=${category}, order='asc')}">Due date ascending</a>
+        <a class="link" th:href="@{/todos(keyword=${keyword}, category=${category}, order='desc')}">Due date descending</a>
+    </p>
+    <p><a class="btn" href="/todos/new">New Todo</a></p>
+    <p th:if="${#lists.isEmpty(todos)}">No todos found.</p>
+    <table class="todo-table" th:unless="${#lists.isEmpty(todos)}">
+        <thead><tr><th>Title</th><th>Category</th><th>Priority</th><th>Due date</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+        <tr th:each="todo : ${todos}">
+            <td th:text="${todo.title}">Title</td>
+            <td th:text="${todo.category}">Category</td>
+            <td th:text="${todo.priority == 1 ? 'High' : (todo.priority == 2 ? 'Medium' : 'Low')}">Priority</td>
+            <td th:text="${todo.dueDate}">Due date</td>
+            <td th:text="${todo.completed ? 'Completed' : 'Open'}">Status</td>
+            <td><a class="link" th:href="@{/todos/{id}/edit(id=${todo.id})}">Edit</a> <a class="link" th:href="@{/todos/{id}/delete(id=${todo.id})}">Delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

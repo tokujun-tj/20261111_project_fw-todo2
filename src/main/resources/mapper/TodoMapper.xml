@@ -13,6 +13,12 @@
             <if test="category != null and category != '' and category != 'すべて'">
                 AND category = #{category}
             </if>
+            <if test="from != null">
+                AND due_date &gt;= #{from}
+            </if>
+            <if test="to != null">
+                AND due_date &lt;= #{to}
+            </if>
         </where>
         ORDER BY due_date
         <choose>
@@ -38,9 +44,9 @@
         WHERE id = #{id}
     </update>
 
-    <insert id="insert">
-        INSERT INTO todos (title, detail, category, priority, due_date)
-        VALUES (#{title}, #{detail}, #{category}, #{priority}, #{dueDate})
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO todos (title, detail, category, priority, due_date, completed)
+        VALUES (#{title}, #{detail}, #{category}, #{priority}, #{dueDate}, COALESCE(#{completed}, FALSE))
     </insert>
 
     <delete id="deleteById">

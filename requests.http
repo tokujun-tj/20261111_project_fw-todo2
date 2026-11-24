@@ -1,0 +1,75 @@
+### 1. 1件登録する
+POST http://localhost:8080/api/todos
+Content-Type: application/json
+
+{
+  "title": "APIの使い方を確認する",
+  "category": "プログラミング",
+  "priority": 2,
+  "dueDate": "2026-12-01"
+}
+
+### 2. 1件取得する
+GET http://localhost:8080/api/todos/1
+
+### 3. 1件を入れ替える
+PUT http://localhost:8080/api/todos/1
+Content-Type: application/json
+
+{
+  "title": "APIの使い方を実際に確認する",
+  "detail": "requests.httpから送信して確認する",
+  "category": "プログラミング",
+  "priority": 1,
+  "dueDate": "2026-12-05",
+  "completed": false
+}
+
+### 4. 1件削除する
+DELETE http://localhost:8080/api/todos/1
+
+### 追加
+
+GET http://localhost:8080/api/todos?category=就職活動
+
+### 5. 祝日を直接取ってくる
+GET https://holidays-jp.github.io/api/v1/date.json
+
+### 6. 自分のアプリの祝日API
+GET http://localhost:8080/api/holidays
+
+### 追加
+GET /api/todos?from=2026-04-01&to=2026-04-30
+
+### 7. 履歴書と職務経歴書を見直す
+POST http://localhost:8080/api/todos
+Content-Type: application/json
+
+{
+  "title": "履歴書と職務経歴書を見直す",
+  "category": "応募書類",
+  "priority": 1,
+  "dueDate": "2026-04-04"
+}
+
+### 8. 応募企業の事業内容を調べる
+POST http://localhost:8080/api/todos
+Content-Type: application/json
+
+{
+  "title": "応募企業の事業内容を調べる",
+  "category": "企業研究",
+  "priority": 2,
+  "dueDate": "2026-04-04"
+}
+
+### 9. 面接で話す自己PRを準備する
+POST http://localhost:8080/api/todos
+Content-Type: application/json
+
+{
+  "title": "面接で話す自己PRを準備する",
+  "category": "面接対策",
+  "priority": 3,
+  "dueDate": "2026-04-04"
+}
