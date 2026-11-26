@@ -37,7 +37,7 @@ public class HomeController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("category", category);
         model.addAttribute("order", order);
-        return "todos-fixed";
+        return "todos";
     }
 
     @GetMapping("/todos/new")
