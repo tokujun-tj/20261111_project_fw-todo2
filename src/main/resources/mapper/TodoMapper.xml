@@ -20,10 +20,10 @@
                 AND due_date &lt;= #{to}
             </if>
         </where>
-        ORDER BY due_date
+        ORDER BY due_date IS NULL,
         <choose>
-            <when test="order == 'desc'">DESC</when>
-            <otherwise>ASC</otherwise>
+            <when test="order == 'desc'">due_date DESC</when>
+            <otherwise>due_date ASC</otherwise>
         </choose>
     </select>
 

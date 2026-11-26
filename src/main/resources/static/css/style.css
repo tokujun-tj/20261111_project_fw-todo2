@@ -18,6 +18,10 @@
     --color-holiday: #fef3c7;
     --color-sunday: #fee2e2;
     --color-saturday: #dbeafe;
+    --color-deadline-overdue: #fee2e2;
+    --color-deadline-overdue-text: #991b1b;
+    --color-deadline-soon: #fef3c7;
+    --color-deadline-soon-text: #92400e;
 }
 
 [data-theme="dark"] {
@@ -36,6 +40,10 @@
     --color-holiday: #713f12;
     --color-sunday: #7f1d1d;
     --color-saturday: #1e3a8a;
+    --color-deadline-overdue: #7f1d1d;
+    --color-deadline-overdue-text: #fecaca;
+    --color-deadline-soon: #713f12;
+    --color-deadline-soon-text: #fde68a;
 }
 
 body {
@@ -76,6 +84,45 @@ body {
 .todo-table th {
     background: var(--color-surface-muted);
     font-weight: bold;
+}
+
+.todo-table tr.deadline-overdue {
+    background: var(--color-deadline-overdue);
+    color: var(--color-deadline-overdue-text);
+}
+
+.todo-table tr.deadline-overdue .link {
+    color: var(--color-deadline-overdue-text);
+}
+
+.todo-table tr.deadline-soon {
+    background: var(--color-deadline-soon);
+    color: var(--color-deadline-soon-text);
+}
+
+.todo-table tr.deadline-soon .link {
+    color: var(--color-deadline-soon-text);
+}
+
+.deadline-legend {
+    display: flex;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.deadline-legend-item {
+    border-radius: 4px;
+    padding: 2px 8px;
+}
+
+.deadline-legend-overdue {
+    background: var(--color-deadline-overdue);
+    color: var(--color-deadline-overdue-text);
+}
+
+.deadline-legend-soon {
+    background: var(--color-deadline-soon);
+    color: var(--color-deadline-soon-text);
 }
 
 .flash {

@@ -51,6 +51,10 @@
         <a class="link" th:href="@{/todos(keyword=${keyword}, category=${category}, order='asc')}">期限が近い順</a>
         <a class="link" th:href="@{/todos(keyword=${keyword}, category=${category}, order='desc')}">期限が遠い順</a>
     </p>
+    <p class="deadline-legend" aria-label="期限の状態">
+        <span class="deadline-legend-item deadline-legend-overdue">期限切れ</span>
+        <span class="deadline-legend-item deadline-legend-soon">3日以内</span>
+    </p>
 
     <p>
         <a class="btn" href="/todos/new">新規登録</a>
@@ -71,11 +75,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="todo : ${todos}">
+        <tr th:each="todo : ${todos}"
+            th:with="today=${#temporals.createToday()}"
+            th:classappend="${todo.dueDate != null and todo.dueDate.isBefore(today) ? 'deadline-overdue' : (todo.dueDate != null and !todo.dueDate.isBefore(today) and !todo.dueDate.isAfter(today.plusDays(3)) ? 'deadline-soon' : '')}">
             <td th:text="${todo.title}">やること</td>
             <td th:text="${todo.category}">ジャンル</td>
             <td th:text="${todo.priority == 1 ? '高' : (todo.priority == 2 ? '中' : '低')}">優先度</td>
-            <td th:text="${todo.dueDate}">期限</td>
+            <td th:text="${todo.dueDate == null ? '—' : #temporals.format(todo.dueDate, 'yyyy/MM/dd')}">期限</td>
             <td th:text="${todo.completed ? '完了' : '未完了'}">状態</td>
             <td>
                 <a class="link" th:href="@{/todos/{id}/edit(id=${todo.id})}">編集</a>
