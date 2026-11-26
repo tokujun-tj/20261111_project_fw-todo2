@@ -22,4 +22,8 @@ public interface TodoMapper {
     void insert(Todo todo);
 
     void deleteById(Long id);
+
+    List<TodoCount> countByCategory();
+
+    List<TodoCount> countByPriority();
 }

@@ -43,4 +43,12 @@ public class TodoService {
         todoMapper.deleteById(id);
         log.info("Todo deletion completed for id={}", id);
     }
+
+    public List<TodoCount> countByCategory() {
+        return todoMapper.countByCategory();
+    }
+
+    public List<TodoCount> countByPriority() {
+        return todoMapper.countByPriority();
+    }
 }

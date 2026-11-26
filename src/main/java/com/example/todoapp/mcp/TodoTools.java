@@ -152,9 +152,9 @@ public class TodoTools {
     }
 
     private void validateCategory(String category) {
-        Set<String> categories = Set.of("デザイン", "マーケティング", "プログラミング", "資格", "就職活動");
+        Set<String> categories = Set.of("デザイン", "マーケティング", "プログラミング", "資格", "就職活動", "その他");
         if (!categories.contains(category)) {
-            throw new IllegalArgumentException("ジャンルは指定された5種類から選んでください");
+            throw new IllegalArgumentException("ジャンルは指定された6種類から選んでください");
         }
     }
 }

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>やること一覧</title>
     <link rel="stylesheet" href="/css/style.css?v=dark-mode-1">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script>
         (function () {
             const key = 'todo-theme';
@@ -25,6 +26,25 @@
     <span class="material-icons light-icon" aria-hidden="true">light_mode</span>
 </button>
 <main class="container">
+    <section class="statistics" aria-labelledby="statistics-title">
+        <h2 id="statistics-title" class="section-title">タスク分布</h2>
+        <div class="chart-grid">
+            <article class="chart-card">
+                <h3>カテゴリ別</h3>
+                <div class="chart-wrapper">
+                    <canvas id="category-chart" aria-label="カテゴリ別タスク数"></canvas>
+                    <span id="todo-total" class="chart-total" aria-live="polite">0</span>
+                </div>
+            </article>
+            <article class="chart-card">
+                <h3>優先度別</h3>
+                <div class="chart-wrapper">
+                    <canvas id="priority-chart" aria-label="優先度別タスク数"></canvas>
+                </div>
+            </article>
+        </div>
+        <p id="statistics-error" class="error" hidden>集計データを取得できませんでした。</p>
+    </section>
     <div class="user-bar">
         <span sec:authorize="isAuthenticated()" th:text="|ログイン中: ${#authentication.name}|">ログイン中</span>
         <form th:action="@{/logout}" method="post">
@@ -47,6 +67,7 @@
             <option value="プログラミング" th:selected="${category == 'プログラミング'}">プログラミング</option>
             <option value="資格" th:selected="${category == '資格'}">資格</option>
             <option value="就職活動" th:selected="${category == '就職活動'}">就職活動</option>
+            <option value="その他" th:selected="${category == 'その他'}">その他</option>
         </select>
 
         <input type="hidden" name="order" th:value="${order}">
@@ -97,5 +118,43 @@
         </tbody>
     </table>
 </main>
+<script>
+    (() => {
+        const colors = ['#4f46e5', '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+        const priorityColors = { HIGH: '#ef4444', MEDIUM: '#f59e0b', LOW: '#10b981' };
+        const totalLabel = {
+            id: 'totalLabel',
+            afterDraw(chart) {
+                if (chart.canvas.id !== 'category-chart') return;
+                document.getElementById('todo-total').textContent =
+                    chart.data.datasets[0].data.reduce((sum, value) => sum + value, 0);
+            }
+        };
+        Chart.register(totalLabel);
+
+        const createChart = (canvasId, items, type) => {
+            const labels = items.map(item => item.label);
+            const values = items.map(item => item.count);
+            const backgroundColor = type === 'pie'
+                ? labels.map(label => priorityColors[label] || '#64748b')
+                : labels.map((_, index) => colors[index % colors.length]);
+            new Chart(document.getElementById(canvasId), {
+                type,
+                data: { labels, datasets: [{ data: values, backgroundColor, borderWidth: 2, borderColor: 'transparent' }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+        };
+
+        Promise.all([
+            fetch('/api/todos/stats/categories').then(response => response.ok ? response.json() : Promise.reject(response)),
+            fetch('/api/todos/stats/priorities').then(response => response.ok ? response.json() : Promise.reject(response))
+        ]).then(([categories, priorities]) => {
+            createChart('category-chart', categories, 'doughnut');
+            createChart('priority-chart', priorities, 'pie');
+        }).catch(() => {
+            document.getElementById('statistics-error').hidden = false;
+        });
+    })();
+</script>
 </body>
 </html>

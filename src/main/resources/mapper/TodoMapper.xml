@@ -53,4 +53,18 @@
         DELETE FROM todos
         WHERE id = #{id}
     </delete>
+
+    <select id="countByCategory" resultType="com.example.todoapp.TodoCount">
+        SELECT category AS label, COUNT(*) AS count
+        FROM todos
+        GROUP BY category
+        ORDER BY category
+    </select>
+
+    <select id="countByPriority" resultType="com.example.todoapp.TodoCount">
+        SELECT priority AS label, COUNT(*) AS count
+        FROM todos
+        GROUP BY priority
+        ORDER BY priority
+    </select>
 </mapper>

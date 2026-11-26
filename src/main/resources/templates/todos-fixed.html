@@ -38,6 +38,7 @@
             <option value="プログラミング" th:selected="${category == 'プログラミング'}">Programming</option>
             <option value="資格" th:selected="${category == '資格'}">Qualification</option>
             <option value="就職活動" th:selected="${category == '就職活動'}">Job hunting</option>
+        <option value="その他" th:selected="${category == 'その他'}">Other</option>
         </select>
         <input type="hidden" name="order" th:value="${order}">
         <button class="btn" type="submit">Filter</button>
