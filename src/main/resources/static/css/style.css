@@ -295,6 +295,38 @@ body {
     display: inline;
 }
 
+ .user-bar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    color: var(--color-text-muted, #666);
+    font-size: 0.9rem;
+}
+
+.user-bar form { margin: 0; }
+
+.link-button {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--color-link);
+    cursor: pointer;
+    font: inherit;
+    text-decoration: underline;
+}
+
+.login-page {
+    max-width: 480px;
+    margin: 64px auto;
+}
+
+.login-form {
+    display: grid;
+    gap: 16px;
+}
+
 @media (prefers-reduced-motion: no-preference) {
     body,
     .theme-toggle,

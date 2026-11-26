@@ -25,3 +25,16 @@ CREATE TABLE todos (
 ) ENGINE=InnoDB
   DEFAULT CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
+
+CREATE TABLE users (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    username VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    role VARCHAR(50) NOT NULL DEFAULT 'USER',
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_users_username (username)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- 初期ユーザー: admin / password（password列はBCryptハッシュ）
+INSERT INTO users (username, password, role)
+VALUES ('admin', '$2a$10$Y82QXfKt4n76bFIDWH.VveRsdDeEZvz.oGTCE1N8lTl21WhcENL4W', 'USER');
