@@ -46,6 +46,7 @@
         <p id="statistics-error" class="error" hidden>集計データを取得できませんでした。</p>
     </section>
     <div class="user-bar">
+        <a class="link" href="/settings/api-keys">APIキー発行画面</a>
         <span sec:authorize="isAuthenticated()" th:text="|ログイン中: ${#authentication.name}|">ログイン中</span>
         <form th:action="@{/logout}" method="post">
             <button class="link-button" type="submit">ログアウト</button>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APIキー管理</title><link rel="stylesheet" href="/css/style.css?v=api-keys-1">
+    <script>(function(){const k='todo-theme';let s=null;try{s=localStorage.getItem(k)}catch(e){}document.documentElement.dataset.theme=s||'light'})();</script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"><script src="/js/theme.js?v=api-keys-1" defer></script>
+</head>
+<body>
+<button class="theme-toggle" type="button" data-theme-toggle aria-label="テーマ切り替え"><span class="material-icons dark-icon">dark_mode</span><span class="material-icons light-icon">light_mode</span></button>
+<main class="container api-key-page">
+    <div class="user-bar"><a class="link" href="/todos">Todo一覧へ戻る</a></div>
+    <h1 class="page-title">🔑 APIキー管理</h1>
+    <p class="flash" th:if="${message}" th:text="${message}"></p>
+    <section class="api-key-issue-card">
+        <h2>新しいAPIキーを発行</h2>
+        <form class="api-key-form" method="post" action="/settings/api-keys">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <label class="form-label" for="name">キー名（任意）</label>
+            <input class="form-input" id="name" name="name" maxlength="100" placeholder="例：開発用API">
+            <button class="btn" type="submit">＋ 新規キーを発行</button>
+        </form>
+    </section>
+    <section class="api-key-once" th:if="${issuedApiKey}">
+        <strong>⚠ このキーは再表示できません。必ずコピーしてください。</strong>
+        <p class="api-key-value" th:text="${issuedApiKey}"></p>
+        <p class="api-key-note" th:text="|キー名: ${issuedApiKeyName}|"></p>
+    </section>
+    <section>
+        <h2>発行済みAPIキー</h2>
+        <table class="api-key-table"><thead><tr><th>キー名</th><th>プレフィックス</th><th>発行日時</th><th>最終使用</th><th>状態</th><th>操作</th></tr></thead>
+        <tbody><tr th:each="key : ${apiKeys}"><td th:text="${key.name}">default</td><td th:text="${#strings.substring(key.keyHash, 0, 10)} + '...'">ハッシュ</td><td th:text="${#temporals.format(key.createdAt, 'yyyy/MM/dd HH:mm')}">-</td><td th:text="${key.lastUsedAt == null ? '未使用' : #temporals.format(key.lastUsedAt, 'yyyy/MM/dd HH:mm')}">未使用</td><td th:text="${key.revokedAt == null ? '有効' : '無効'}">有効</td><td><form th:if="${key.revokedAt == null}" method="post" th:action="@{/settings/api-keys/{id}/revoke(id=${key.id})}"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"><button class="link-button danger" type="submit">無効化</button></form></td></tr><tr th:if="${#lists.isEmpty(apiKeys)}"><td colspan="6">発行済みのAPIキーはありません。</td></tr></tbody></table>
+    </section>
+</main>
+</body></html>
