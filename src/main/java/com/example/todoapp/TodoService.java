@@ -51,4 +51,28 @@ public class TodoService {
     public List<TodoCount> countByPriority() {
         return todoMapper.countByPriority();
     }
+
+    public long countAll() {
+        return todoMapper.countAll();
+    }
+
+    public long countCompleted() {
+        return todoMapper.countCompleted();
+    }
+
+    public long countIncomplete() {
+        return todoMapper.countIncomplete();
+    }
+
+    public long countOverdue(LocalDate today) {
+        return todoMapper.countOverdue(today);
+    }
+
+    public List<TodoCount> countCompletedByDay(LocalDate from, LocalDate to) {
+        return todoMapper.countCompletedByDay(from, to);
+    }
+
+    public List<TodoCount> countByStatus() {
+        return todoMapper.countByStatus();
+    }
 }

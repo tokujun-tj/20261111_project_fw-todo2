@@ -67,4 +67,39 @@
         GROUP BY priority
         ORDER BY priority
     </select>
+
+    <select id="countAll" resultType="long">
+        SELECT COUNT(*) FROM todos
+    </select>
+
+    <select id="countCompleted" resultType="long">
+        SELECT COUNT(*) FROM todos WHERE completed = TRUE
+    </select>
+
+    <select id="countIncomplete" resultType="long">
+        SELECT COUNT(*) FROM todos WHERE completed = FALSE
+    </select>
+
+    <select id="countOverdue" resultType="long">
+        SELECT COUNT(*) FROM todos
+        WHERE completed = FALSE AND due_date IS NOT NULL AND due_date &lt; #{today}
+    </select>
+
+    <select id="countCompletedByDay" resultType="com.example.todoapp.TodoCount">
+        SELECT DATE_FORMAT(updated_at, '%Y-%m-%d') AS label, COUNT(*) AS count
+        FROM todos
+        WHERE completed = TRUE
+          AND updated_at &gt;= #{from}
+          AND updated_at &lt; DATE_ADD(#{to}, INTERVAL 1 DAY)
+        GROUP BY DATE_FORMAT(updated_at, '%Y-%m-%d')
+        ORDER BY label
+    </select>
+
+    <select id="countByStatus" resultType="com.example.todoapp.TodoCount">
+        SELECT CASE WHEN completed = TRUE THEN '完了' ELSE '未完了' END AS label,
+               COUNT(*) AS count
+        FROM todos
+        GROUP BY completed
+        ORDER BY completed DESC
+    </select>
 </mapper>

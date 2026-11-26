@@ -104,6 +104,30 @@ body {
     height: 260px;
 }
 
+.dashboard { max-width: 1180px; }
+.dashboard-nav { display: flex; justify-content: flex-end; align-items: center; gap: 18px; margin-bottom: 32px; }
+.dashboard-header { margin-bottom: 28px; }
+.eyebrow { margin: 0 0 4px; color: #6366f1; font-size: 12px; font-weight: 700; letter-spacing: .16em; }
+.dashboard-header .page-title { margin-bottom: 4px; }
+.dashboard-lead { margin: 0; }
+.stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card { border: 1px solid var(--color-border-soft); border-radius: 14px; padding: 20px; background: var(--color-surface); box-shadow: 0 6px 18px rgba(15, 23, 42, .05); }
+.stat-card span, .stat-card small { display: block; }
+.stat-card span { font-size: 14px; font-weight: 600; }
+.stat-card strong { display: block; margin: 7px 0 2px; color: var(--color-heading); font-size: 34px; line-height: 1.1; }
+.stat-card small { font-size: 12px; opacity: .75; }
+.stat-card-total { border-top: 4px solid #6366f1; }
+.stat-card-completed { border-top: 4px solid #10b981; }
+.stat-card-incomplete { border-top: 4px solid #f59e0b; }
+.stat-card-overdue { border-top: 4px solid #ef4444; }
+.dashboard-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.chart-card-wide { grid-column: span 2; }
+.chart-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.chart-heading h2 { margin: 0; color: var(--color-heading); font-size: 17px; }
+.chart-heading span { font-size: 12px; opacity: .7; }
+.dashboard-chart { position: relative; height: 280px; }
+.dashboard-chart-doughnut { height: 300px; }
+
 .chart-total {
     position: absolute;
     top: 50%;
@@ -399,4 +423,12 @@ body {
     .chart-grid {
         grid-template-columns: 1fr;
     }
+
+    .stat-grid, .dashboard-grid { grid-template-columns: 1fr 1fr; }
+    .chart-card-wide { grid-column: span 2; }
+}
+
+@media (max-width: 420px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .chart-card-wide { grid-column: span 1; }
 }

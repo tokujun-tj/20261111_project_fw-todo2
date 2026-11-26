@@ -26,4 +26,16 @@ public interface TodoMapper {
     List<TodoCount> countByCategory();
 
     List<TodoCount> countByPriority();
+
+    long countAll();
+
+    long countCompleted();
+
+    long countIncomplete();
+
+    long countOverdue(LocalDate today);
+
+    List<TodoCount> countCompletedByDay(@Param("from") LocalDate from, @Param("to") LocalDate to);
+
+    List<TodoCount> countByStatus();
 }
