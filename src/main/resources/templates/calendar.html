@@ -4,9 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>カレンダー</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=dark-mode-1">
+    <script>
+        (function () {
+            const key = 'todo-theme';
+            let saved = null;
+            try { saved = localStorage.getItem(key); } catch (error) {}
+            const theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.dataset.theme = theme;
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="/js/theme.js?v=dark-mode-1" defer></script>
 </head>
 <body>
+<button class="theme-toggle" type="button" data-theme-toggle aria-label="ダークモードに切り替え" title="ダークモード">
+    <span class="material-icons dark-icon" aria-hidden="true">dark_mode</span>
+    <span class="material-icons light-icon" aria-hidden="true">light_mode</span>
+</button>
 <main class="container calendar-page">
     <h1 class="page-title" th:text="|${year}年${month}月|">2026年4月</h1>
 
@@ -65,7 +82,7 @@
                 todoName.textContent = todo.title;
 
                 if (todo.dueDate < todayString && !todo.completed) {
-                    todoName.style.color = '#b91c1c';
+                    todoName.classList.add('is-overdue');
                 }
                 cell.appendChild(todoName);
             });
@@ -98,12 +115,12 @@
             const holidayName = holidays[cell.dataset.date];
 
             if (holidayName) {
-                cell.style.backgroundColor = '#fef3c7';
+                cell.classList.add('is-holiday');
                 cell.title = holidayName;
             } else if (dayOfWeek === 0) {
-                cell.style.backgroundColor = '#fee2e2';
+                cell.classList.add('is-sunday');
             } else if (dayOfWeek === 6) {
-                cell.style.backgroundColor = '#dbeafe';
+                cell.classList.add('is-saturday');
             }
         });
     }
